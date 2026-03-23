@@ -1,5 +1,6 @@
 import { calculateBreadth } from "../../lib/breadth";
 import { calculateSectorStrength } from "../../lib/sector";
+import { calculateSectorFlow } from "../../lib/sectorFlow";
 
 export default function handler(req, res) {
 const stocks = [
@@ -9,12 +10,22 @@ const stocks = [
   { symbol: "TCS", price: 3500, prevClose: 3550, sector: "IT" },
   { symbol: "INFY", price: 1500, prevClose: 1480, sector: "IT" }
 ];
+
+const previousSectorStrength = [
+  { sector: "Energy", strength: 1.5 },
+  { sector: "IT", strength: 0.5 }
+];
   const breadth = calculateBreadth(stocks);
   const sectorStrength = calculateSectorStrength(stocks);
+  const sectorFlow = calculateSectorFlow(
+  sectorStrength,
+  previousSectorStrength
+);
 
- res.status(200).json({
+res.status(200).json({
   stocks,
   breadth,
-  sectorStrength
+  sectorStrength,
+  sectorFlow
 });
 }
